@@ -31,9 +31,37 @@ IN THE SOFTWARE.
 
 class Broadbean {
 
+  const basename = 'broadbean/broadbean.php';
+
+  function activate() {
+    self::add_rewrite_rule();
+    flush_rewrite_rules();
+  }
+
+  function deactivate() {
+    global $wp_rewrite;
+    unset($wp_rewrite->non_wp_rules['broadbean-inbox$']);
+    flush_rewrite_rules();
+  }
+
   function init() {
     self::create_post_type();
+  }
+
+  function admin_init() {
+    self::register_settings();
     self::add_rewrite_rule();
+  }
+
+  function admin_menu() {
+    add_submenu_page(
+      'options-general.php',
+      'Broadbean',
+      'Broadbean',
+      'manage_options',
+      'broadbean',
+      array('Broadbean', 'render_admin_menu')
+    );
   }
 
   function create_post_type() {
@@ -62,36 +90,25 @@ class Broadbean {
     );
   }
 
-  function add_rewrite_rule() {
-    $endpoint = get_option('broadbean_endpoint');
-    if (empty($endpoint)) $endpoint = 'broadbean-inbox';
-    $endpoint = preg_replace('/^\/+/', '', $endpoint);
-
-    $url = plugins_url('inbox.php',  'broadbean/broadbean.php');
-    $url = str_replace(site_url(), '', $url);
-    $url = preg_replace('/^\/+/', '', $url);
-
-    add_rewrite_rule("$endpoint$", $url, 'top');
-  }
-
-  function create_admin_menu() {
-    add_submenu_page(
-      'options-general.php',
-      'Broadbean',
-      'Broadbean',
-      'manage_options',
-      'broadbean',
-      array('Broadbean', 'admin_menu')
-    );
-  }
-
   function register_settings() {
-    register_setting('broadbean_settings', 'broadbean_endpoint');
     register_setting('broadbean_settings', 'broadbean_username');
     register_setting('broadbean_settings', 'broadbean_password');
   }
 
-  function admin_menu() {
+  function add_rewrite_rule() {
+    $url = plugins_url('inbox.php',  self::basename);
+    $url = str_replace(site_url(), '', $url);
+    $url = preg_replace('/^\/+/', '', $url);
+
+    add_rewrite_rule('broadbean-inbox$', $url, 'top');
+  }
+
+  function action_links($links) {
+    array_unshift($links, '<a href="options-general.php?page=broadbean">Settings</a>');
+    return $links;
+  }
+
+  function render_admin_menu() {
 ?>
 <div class="wrap">
   <h2>Broadbean Settings</h2>
@@ -99,12 +116,6 @@ class Broadbean {
     <?php settings_fields('broadbean_settings') ?>
     <table class="form-table">
       <tbody>
-        <tr valign="top">
-          <th scope="row"><label for="broadbean_endpoint">Endpoint Path</label></th>
-          <td><input type="text" name="broadbean_endpoint" id="broadbean_endpoint"
-                     value="<?php echo get_option('broadbean_endpoint') ?>"
-                     placeholder="broadbean-inbox"></td>
-        </tr>
         <tr valign="top">
           <th scope="row"><label for="broadbean_username">Username</label></th>
           <td><input type="text" name="broadbean_username" id="broadbean_username"
@@ -125,14 +136,12 @@ class Broadbean {
 
 }
 
-add_action('init', array('Broadbean', 'init'));
-add_action('admin_init', array('Broadbean', 'register_settings'));
-add_action('admin_menu', array('Broadbean', 'create_admin_menu'));
+register_activation_hook(Broadbean::basename, array('Broadbean', 'activate'));
+register_deactivation_hook(Broadbean::basename, array('Broadbean', 'deactivate'));
 
-add_filter('plugin_action_links_broadbean/broadbean.php', 'broadbean_settings_link');
-function broadbean_settings_link($links) {
-  array_unshift($links, '<a href="options-general.php?page=broadbean">Settings</a>');
-  return $links;
-}
+add_filter('plugin_action_links_'.Broadbean::basename, array('Broadbean', 'action_links'));
+add_action('init', array('Broadbean', 'init'));
+add_action('admin_init', array('Broadbean', 'admin_init'));
+add_action('admin_menu', array('Broadbean', 'admin_menu'));
 
 ?>
