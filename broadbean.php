@@ -33,6 +33,7 @@ class Broadbean {
 
   function init() {
     self::create_post_type();
+    self::add_rewrite_rule();
   }
 
   function create_post_type() {
@@ -61,13 +62,25 @@ class Broadbean {
     );
   }
 
+  function add_rewrite_rule() {
+    $endpoint = get_option('broadbean_endpoint');
+    if (empty($endpoint)) $endpoint = 'broadbean-inbox';
+    $endpoint = preg_replace('/^\/+/', '', $endpoint);
+
+    $url = plugins_url('inbox.php',  'broadbean/broadbean.php');
+    $url = str_replace(site_url(), '', $url);
+    $url = preg_replace('/^\/+/', '', $url);
+
+    add_rewrite_rule("$endpoint$", $url, 'top');
+  }
+
   function create_admin_menu() {
     add_submenu_page(
       'options-general.php',
       'Broadbean',
       'Broadbean',
       'manage_options',
-      'wp-broadbean',
+      'broadbean',
       array('Broadbean', 'admin_menu')
     );
   }
@@ -89,7 +102,8 @@ class Broadbean {
         <tr valign="top">
           <th scope="row"><label for="broadbean_endpoint">Endpoint Path</label></th>
           <td><input type="text" name="broadbean_endpoint" id="broadbean_endpoint"
-                     value="<?php echo get_option('broadbean_endpoint') ?>"></td>
+                     value="<?php echo get_option('broadbean_endpoint') ?>"
+                     placeholder="broadbean-inbox"></td>
         </tr>
         <tr valign="top">
           <th scope="row"><label for="broadbean_username">Username</label></th>
@@ -114,5 +128,11 @@ class Broadbean {
 add_action('init', array('Broadbean', 'init'));
 add_action('admin_init', array('Broadbean', 'register_settings'));
 add_action('admin_menu', array('Broadbean', 'create_admin_menu'));
+
+add_filter('plugin_action_links_broadbean/broadbean.php', 'broadbean_settings_link');
+function broadbean_settings_link($links) {
+  array_unshift($links, '<a href="options-general.php?page=broadbean">Settings</a>');
+  return $links;
+}
 
 ?>
