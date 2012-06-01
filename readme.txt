@@ -23,7 +23,7 @@ all available metadata.
 
 == Installation ==
 
-1. Upload wp-broadbean/ directory to the wp-content/plugins directory.
+1. Upload plugin files to wp-content/plugins/broadbean.
 2. Activate Broadbean through the 'Plugins' menu in Wordpress.
 3. Choose a username and password (you'll share these with Broadbean later)
    then go to the plugin's settings page and enter them in the fields provided.
