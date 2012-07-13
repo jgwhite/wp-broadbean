@@ -14,7 +14,7 @@ if (file_exists($root.'/wp-load.php')) {
 $username = get_option('broadbean_username');
 $password = get_option('broadbean_password');
 
-$xml = file_get_contents('php://input');
+$xml = trim(file_get_contents('php://input'));
 $params = json_decode(json_encode(simplexml_load_string($xml)), 1);
 
 if ($params['username'] !== $username || $params['password'] !== $password) {
