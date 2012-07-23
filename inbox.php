@@ -37,8 +37,8 @@ function broadbean_add($params) {
   $job_post_id = wp_insert_post(array(
     'post_type'     => 'job',
     'post_title'    => $params['job_title'],
-    'post_category' => array($params['job_category']),
-    'post_content'  => $params['job_description']
+    'post_content'  => $params['job_description'],
+    'tags_input'    => array($params['job_category'], $params['job_duration'])
   ));
 
   if ($job_post_id != 0) {
@@ -51,6 +51,7 @@ function broadbean_add($params) {
     add_post_meta($job_post_id , 'application_email' , $params['application_email'] , true);
     add_post_meta($job_post_id , 'application_url'   , $params['application_url']   , true);
     add_post_meta($job_post_id , 'job_reference'     , $params['job_reference']     , true);
+    add_post_meta($job_post_id , 'job_category'      , $params['job_category']      , true);
     add_post_meta($job_post_id , 'job_title'         , $params['job_title']         , true);
     add_post_meta($job_post_id , 'job_type'          , $params['job_type']          , true);
     add_post_meta($job_post_id , 'job_duration'      , $params['job_duration']      , true);
