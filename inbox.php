@@ -42,29 +42,29 @@ function broadbean_add($params) {
   ));
 
   if ($job_post_id != 0) {
-    add_post_meta($job_post_id , 'Job Type'          , $params['job_type']          , true);
-    add_post_meta($job_post_id , 'Contact Name'      , $params['contact_name']      , true);
-    add_post_meta($job_post_id , 'Contact Email'     , $params['contact_email']     , true);
-    add_post_meta($job_post_id , 'Contact Telephone' , $params['contact_telephone'] , true);
-    add_post_meta($job_post_id , 'Contact URL'       , $params['contact_url']       , true);
-    add_post_meta($job_post_id , 'Days to Advertise' , $params['days_to_advertise'] , true);
-    add_post_meta($job_post_id , 'Application Email' , $params['application_email'] , true);
-    add_post_meta($job_post_id , 'Application URL'   , $params['application_url']   , true);
-    add_post_meta($job_post_id , 'Job Reference'     , $params['job_reference']     , true);
-    add_post_meta($job_post_id , 'Job Title'         , $params['job_title']         , true);
-    add_post_meta($job_post_id , 'Job Type'          , $params['job_type']          , true);
-    add_post_meta($job_post_id , 'Job Duration'      , $params['job_duration']      , true);
-    add_post_meta($job_post_id , 'Job Startdate'     , $params['job_startdate']     , true);
-    add_post_meta($job_post_id , 'Job Skills'        , $params['job_skills']        , true);
-    add_post_meta($job_post_id , 'Job Description'   , $params['job_description']   , true);
-    add_post_meta($job_post_id , 'Job Location'      , $params['job_location']      , true);
-    add_post_meta($job_post_id , 'Job Industry'      , $params['job_industry']      , true);
-    add_post_meta($job_post_id , 'Salary Currency'   , $params['salary_currency']   , true);
-    add_post_meta($job_post_id , 'Salary From'       , $params['salary_from']       , true);
-    add_post_meta($job_post_id , 'Salary To'         , $params['salary_to']         , true);
-    add_post_meta($job_post_id , 'Salary Per'        , $params['salary_per']        , true);
-    add_post_meta($job_post_id , 'Salary Benefits'   , $params['salary_benefits']   , true);
-    add_post_meta($job_post_id , 'Salary'            , $params['salary']            , true);
+    add_post_meta($job_post_id , 'job_type'          , $params['job_type']          , true);
+    add_post_meta($job_post_id , 'contact_name'      , $params['contact_name']      , true);
+    add_post_meta($job_post_id , 'contact_email'     , $params['contact_email']     , true);
+    add_post_meta($job_post_id , 'contact_telephone' , $params['contact_telephone'] , true);
+    add_post_meta($job_post_id , 'contact_url'       , $params['contact_url']       , true);
+    add_post_meta($job_post_id , 'days_to_advertise' , $params['days_to_advertise'] , true);
+    add_post_meta($job_post_id , 'application_email' , $params['application_email'] , true);
+    add_post_meta($job_post_id , 'application_url'   , $params['application_url']   , true);
+    add_post_meta($job_post_id , 'job_reference'     , $params['job_reference']     , true);
+    add_post_meta($job_post_id , 'job_title'         , $params['job_title']         , true);
+    add_post_meta($job_post_id , 'job_type'          , $params['job_type']          , true);
+    add_post_meta($job_post_id , 'job_duration'      , $params['job_duration']      , true);
+    add_post_meta($job_post_id , 'job_startdate'     , $params['job_startdate']     , true);
+    add_post_meta($job_post_id , 'job_skills'        , $params['job_skills']        , true);
+    add_post_meta($job_post_id , 'job_description'   , $params['job_description']   , true);
+    add_post_meta($job_post_id , 'job_location'      , $params['job_location']      , true);
+    add_post_meta($job_post_id , 'job_industry'      , $params['job_industry']      , true);
+    add_post_meta($job_post_id , 'salary_currency'   , $params['salary_currency']   , true);
+    add_post_meta($job_post_id , 'salary_from'       , $params['salary_from']       , true);
+    add_post_meta($job_post_id , 'salary_to'         , $params['salary_to']         , true);
+    add_post_meta($job_post_id , 'salary_per'        , $params['salary_per']        , true);
+    add_post_meta($job_post_id , 'salary_benefits'   , $params['salary_benefits']   , true);
+    add_post_meta($job_post_id , 'salary'            , $params['salary']            , true);
   }
 
   echo 'Added ' . $params['job_reference'];
@@ -74,7 +74,7 @@ function broadbean_add($params) {
 
 function broadbean_delete($params) {
   $posts = get_posts(array(
-    'meta_key'   => 'Job Reference',
+    'meta_key'   => 'job_reference',
     'meta_value' => $params['job_reference'],
     'post_type'  => 'job',
     'post_status' => 'any'
