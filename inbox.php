@@ -66,6 +66,7 @@ function broadbean_add($params) {
     add_post_meta($job_post_id , 'salary_per'        , $params['salary_per']        , true);
     add_post_meta($job_post_id , 'salary_benefits'   , $params['salary_benefits']   , true);
     add_post_meta($job_post_id , 'salary'            , $params['salary']            , true);
+    wp_publish_post($job_post_id);
   }
 
   echo 'Added ' . $params['job_reference'];
