@@ -82,7 +82,7 @@ function broadbean_delete($params) {
     'meta_key'   => 'job_reference',
     'meta_value' => $job_reference,
     'post_type'  => 'job',
-    'post_status' => 'any'
+    'post_status' => 'publish'
   ));
 
   foreach ($posts as $post) {
