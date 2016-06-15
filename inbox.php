@@ -67,6 +67,28 @@ function broadbean_add($params) {
     add_post_meta($job_post_id , 'salary_benefits'   , trim($params['salary_benefits'])   , true);
     add_post_meta($job_post_id , 'salary'            , trim($params['salary'])            , true);
 
+    if ($params['company_logo']) {
+      $logo_url = $params['company_logo'];
+      $filename = basename($logo_url);
+      $target_dir = wp_upload_dir()['path'];
+      $target_path = $target_dir. '/' . $filename;
+
+      file_put_contents($target_path, fopen($logo_url, 'r'));
+
+      $mime_type = mime_content_type($target_path);
+
+      wp_insert_attachment(
+        array(
+          'post_title'     => $filename,
+          'post_content'   => '',
+          'post_status'    => 'inherit',
+          'post_mime_type' => $mime_type
+        ),
+        $target_path,
+        $job_post_id
+      );
+    }
+
     wp_update_post(array('ID' => $job_post_id, 'post_status' => 'publish'));
   }
 
